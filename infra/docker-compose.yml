@@ -1,0 +1,16 @@
+services:
+  saas-training-postgres: # Nom du container de la BDD
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment: # Adresse de la base de donnees depuis les variables d'environnement
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - saas-training-postgres-data:/var/lib/postgresql/data # Volume pour persister la data
+    healthcheck: # Interval pour lancer le reste du code 10s apres la fin de la BDD
+      test: ["CMD", "pg_isready", "-q", "-d", "${DB_NAME}", "-U", "${DB_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 3

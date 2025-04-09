@@ -5,7 +5,7 @@
       <NuxtLink to="/" class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center">
         <span class="text-white font-bold text-lg">A</span>
       </NuxtLink>
-      <span class="text-xl font-semibold text-gray-800">AppName</span>
+      <NuxtLink to="/"> <span class="text-xl font-semibold text-gray-800">AppName</span></NuxtLink>
     </div>
 
     <!-- Navigation centrale (optionnelle) -->
@@ -21,6 +21,12 @@
       <!-- Bouton Connexion/Inscription -->
       <NuxtLink
         to="/register"
+        class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors flex items-center"
+      >
+        <span>Inscription</span>
+      </NuxtLink>
+      <NuxtLink
+        to="/connexion"
         class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors flex items-center"
       >
         <span>Connexion</span>
