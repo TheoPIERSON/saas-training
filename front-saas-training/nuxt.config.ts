@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/fonts", "@nuxtjs/tailwindcss"],
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.NUXT_API_BASE_URL || "http://localhost:8080/",
+      apiBaseUrl: process.env.NUXT_API_BASE_URL || "http://localhost:8080",
     },
   },
 });

@@ -23,7 +23,7 @@ import type { User } from "~/types/user";
 const config = useRuntimeConfig();
 const apiBaseUrl = config.public.apiBaseUrl;
 
-const { data: users, pending, error, refresh } = await useFetch<User[]>(`${apiBaseUrl}user/all-users`, {});
+const { data: users, pending, error, refresh } = await useFetch<User[]>(`${apiBaseUrl}/user/all-users`, {});
 
 // Fonction pour rafraîchir manuellement les données
 const refreshUsers = () => {
