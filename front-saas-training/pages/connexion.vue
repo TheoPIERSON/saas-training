@@ -186,6 +186,8 @@
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
+import { useAuthApi } from "~/services/authApi"; // Importez le service d'authentification
+import { useRouter } from "vue-router"; // Pour la redirection après connexion
 
 // État du formulaire
 const form = reactive({
@@ -199,37 +201,68 @@ const showPassword = ref(false);
 const isLoading = ref(false);
 const loginError = ref("");
 
+// Récupérez le service d'authentification et le router
+const { login } = useAuthApi();
+const router = useRouter();
+
 // Gestion de la connexion
-const handleLogin = () => {
+const handleLogin = async () => {
   // Réinitialiser les erreurs
   loginError.value = "";
-
-  // Simulation de connexion
   isLoading.value = true;
 
-  setTimeout(() => {
-    // Ici, vous implémenteriez la logique de connexion réelle avec votre API
-    console.log("Tentative de connexion avec:", form);
+  try {
+    // Appel à votre API d'authentification
+    const { data, error } = await login({
+      email: form.email,
+      password: form.password,
+    });
 
-    // Simulation de succès ou d'échec (à des fins de démonstration)
-    const success = Math.random() > 0.3;
-
-    if (success) {
-      console.log("Connexion réussie");
-      // Redirection ou autre action après connexion réussie
-    } else {
-      loginError.value = "Email ou mot de passe incorrect. Veuillez réessayer.";
+    // Gestion des erreurs
+    if (error.value) {
+      throw new Error(error.value?.data?.message || "Erreur lors de la connexion");
     }
 
+    // Si la connexion réussit, stockez le token
+    if (data.value?.token) {
+      // Stockez le token dans le localStorage
+      localStorage.setItem("token", data.value.token);
+
+      // Si l'option "Se souvenir de moi" est activée, vous pouvez stocker des informations supplémentaires
+      if (form.rememberMe) {
+        localStorage.setItem("rememberedEmail", form.email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
+
+      // Redirection vers la page d'accueil ou le tableau de bord
+      router.push("/dashboard"); // Ou la page de votre choix
+    } else {
+      throw new Error("Token non reçu");
+    }
+  } catch (err) {
+    // Affichage du message d'erreur
+    loginError.value = (err as Error).message || "Email ou mot de passe incorrect. Veuillez réessayer.";
+  } finally {
     isLoading.value = false;
-  }, 1500);
+  }
 };
 
-// Connexion via réseaux sociaux
+// Connexion via réseaux sociaux - à implémenter si nécessaire
 const socialLogin = (provider: string) => {
   console.log(`Tentative de connexion avec ${provider}`);
-  // Implémentez ici la logique de connexion via OAuth pour le fournisseur spécifié
+  // Cette partie n'est pas liée à votre API Spring Boot, donc elle reste inchangée
 };
+
+// Vérifier si l'utilisateur a déjà été mémorisé (pour "Se souvenir de moi")
+// À exécuter au chargement de la page
+onMounted(() => {
+  const rememberedEmail = localStorage.getItem("rememberedEmail");
+  if (rememberedEmail) {
+    form.email = rememberedEmail;
+    form.rememberMe = true;
+  }
+});
 </script>
 
 <style scoped>

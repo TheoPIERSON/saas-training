@@ -8,4 +8,5 @@ export default defineNuxtConfig({
       apiBaseUrl: process.env.NUXT_API_BASE_URL || "http://localhost:8080",
     },
   },
+  plugins: ["~/plugins/auth.ts"],
 });
