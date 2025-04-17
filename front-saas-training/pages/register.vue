@@ -10,7 +10,7 @@
           id="lastName"
           v-model="form.lastName"
           type="text"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
           placeholder="Votre nom"
           required
         />
@@ -23,7 +23,7 @@
           id="firstName"
           v-model="form.firstName"
           type="text"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
           placeholder="Votre prénom"
           required
         />
@@ -36,7 +36,7 @@
           id="email"
           v-model="form.email"
           type="email"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
           placeholder="votre@email.com"
           required
         />
@@ -50,7 +50,7 @@
             id="password"
             v-model="form.password"
             :type="showPassword ? 'text' : 'password'"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
             placeholder="Choisissez un mot de passe sécurisé"
             required
             minlength="8"
@@ -110,7 +110,7 @@
           id="confirmPassword"
           v-model="confirmPassword"
           :type="showPassword ? 'text' : 'password'"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
           placeholder="Confirmez votre mot de passe"
           required
         />
@@ -124,12 +124,12 @@
             id="terms"
             v-model="termsAccepted"
             type="checkbox"
-            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            class="h-4 w-4 text-primary focus:ring-primary-light border-gray-300 rounded"
             required
           />
           <label for="terms" class="ml-2 block text-sm text-gray-700">
-            J'accepte les <a href="#" class="text-indigo-600 hover:text-indigo-800">conditions d'utilisation</a> et la
-            <a href="#" class="text-indigo-600 hover:text-indigo-800">politique de confidentialité</a>
+            J'accepte les <a href="#" class="text-primary hover:text-primary-dark">conditions d'utilisation</a> et la
+            <a href="#" class="text-primary hover:text-primary-dark">politique de confidentialité</a>
           </label>
         </div>
       </div>
@@ -143,7 +143,7 @@
       <div class="mb-4">
         <button
           type="submit"
-          class="w-full bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
+          class="w-full bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-primary-light focus:ring-offset-2 transition-colors"
           :disabled="isSubmitting"
         >
           <span v-if="isSubmitting">Création en cours...</span>
@@ -193,7 +193,7 @@
       <div class="text-center mt-6">
         <p class="text-sm text-gray-600">
           Vous avez déjà un compte?
-          <NuxtLink to="/connexion" class="text-indigo-600 hover:text-indigo-800 font-medium">Connectez-vous</NuxtLink>
+          <NuxtLink to="/connexion" class="text-primary hover:text-primary-dark font-medium">Connectez-vous</NuxtLink>
         </p>
       </div>
     </form>

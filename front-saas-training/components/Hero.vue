@@ -13,12 +13,12 @@
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
             <button
-              class="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors shadow-lg hover:shadow-xl"
+              class="px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors shadow-lg hover:shadow-xl"
             >
               Commencer maintenant
             </button>
             <button
-              class="px-8 py-3 border border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-50 transition-colors"
+              class="px-8 py-3 border border-primary text-primary font-semibold rounded-lg hover:bg-indigo-50 transition-colors"
             >
               Voir les tarifs
             </button>
