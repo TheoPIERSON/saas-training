@@ -7,16 +7,16 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#4F46E5", // Indigo 600
-          light: "#6366F1", // Indigo 500
-          dark: "#4338CA", // Indigo 700
+          DEFAULT: "#0D9488", // Teal 600
+          light: "#14B8A6", // Teal 500
+          dark: "#0F766E", // Teal 700
         },
         secondary: {
           DEFAULT: "#F97316", // Orange 500
           light: "#FB923C",
           dark: "#EA580C",
         },
-        accent: "#10B981", // Emerald 500
+        accent: "#65A30D", // Emerald 500
         background: "#F9FAFB",
         surface: "#FFFFFF",
         muted: "#6B7280", // Gray 500

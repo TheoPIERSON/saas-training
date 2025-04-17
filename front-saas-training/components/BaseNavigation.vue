@@ -3,9 +3,9 @@
     <!-- Logo et nom du site -->
     <div class="flex items-center space-x-2">
       <NuxtLink to="/" class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-        <span class="text-white font-bold text-lg">A</span>
+        <span class="text-white font-bold text-lg">S</span>
       </NuxtLink>
-      <NuxtLink to="/"> <span class="text-xl font-semibold text-gray-800">AppName</span></NuxtLink>
+      <NuxtLink to="/"> <span class="text-xl font-semibold text-gray-800">Subguard</span></NuxtLink>
     </div>
 
     <!-- Navigation centrale (optionnelle) -->
