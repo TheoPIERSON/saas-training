@@ -236,7 +236,7 @@ const handleLogin = async () => {
       }
 
       // Redirection vers la page d'accueil ou le tableau de bord
-      router.push("/dashboard"); // Ou la page de votre choix
+      router.push("/admin/dashboard"); // Ou la page de votre choix
     } else {
       throw new Error("Token non reçu");
     }

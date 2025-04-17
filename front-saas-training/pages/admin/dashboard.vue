@@ -11,7 +11,9 @@
 </template>
 
 <script setup lang="ts">
-// Aucun script pour cette version simple
+definePageMeta({
+  middleware: ["auth"],
+});
 </script>
 
 <style scoped>
