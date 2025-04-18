@@ -1,7 +1,7 @@
 export interface User {
   id: number | string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
   isPremium: boolean;
   password: string;

@@ -20,7 +20,7 @@
         >
           U
         </div>
-        <span class="text-gray-700 font-medium truncate">User Name</span>
+        <span class="text-gray-700 font-medium truncate">{{ userStore.fullName }}</span>
         <!-- Add user name dynamically -->
       </button>
     </div>
@@ -28,26 +28,26 @@
     <!-- Navigation links -->
     <nav class="flex-grow p-4 space-y-2">
       <NuxtLink
-        to="/dashboard"
+        to="/admin/dashboard"
         class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
       >
         <!-- Add icons here if desired -->
         <span>Dashboard</span>
       </NuxtLink>
       <NuxtLink
-        to="/subscriptions"
+        to="/admin/dashboard"
         class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
       >
         <span>Subscriptions</span>
       </NuxtLink>
       <NuxtLink
-        to="/upcoming"
+        to="/admin/dashboard"
         class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
       >
         <span>Upcoming</span>
       </NuxtLink>
       <NuxtLink
-        to="/pricing"
+        to="/"
         class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
       >
         <span>Change Plan</span>
@@ -58,7 +58,7 @@
     <!-- Settings Link at the bottom -->
     <div class="mt-auto p-4 border-t border-gray-200">
       <NuxtLink
-        to="/settings"
+        to="/admin/dashboard"
         class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
       >
         <span>Settings</span>
@@ -68,7 +68,9 @@
 </template>
 
 <script setup>
-// Sidebar logic can be added here if needed (e.g., collapse/expand)
+import { useUserStore } from "~/stores/user";
+
+const userStore = useUserStore();
 </script>
 
 <style scoped>

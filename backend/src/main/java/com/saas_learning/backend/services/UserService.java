@@ -30,6 +30,11 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'email: " + email));
+    }
+
     @Transactional
     public User addUser(User user) {
         if (!isEmailValid(user.getEmail())) {

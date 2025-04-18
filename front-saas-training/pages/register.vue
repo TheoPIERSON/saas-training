@@ -8,7 +8,7 @@
         <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
         <input
           id="lastName"
-          v-model="form.lastName"
+          v-model="form.lastname"
           type="text"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
           placeholder="Votre nom"
@@ -21,7 +21,7 @@
         <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
         <input
           id="firstName"
-          v-model="form.firstName"
+          v-model="form.firstname"
           type="text"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-light focus:border-transparent"
           placeholder="Votre prénom"
@@ -209,8 +209,8 @@ const userApi = useUserApi();
 
 // État du formulaire
 const form = reactive<User>({
-  firstName: "",
-  lastName: "",
+  firstname: "",
+  lastname: "",
   email: "",
   password: "",
 });

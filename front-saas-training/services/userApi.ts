@@ -3,8 +3,8 @@ import { useFetch } from "nuxt/app";
 
 export interface User {
   id?: number;
-  firstName: string; // Pour le prénom
-  lastName: string; // Pour le nom
+  firstname: string; // Pour le prénom
+  lastname: string; // Pour le nom
   email: string;
   password: string;
 }
