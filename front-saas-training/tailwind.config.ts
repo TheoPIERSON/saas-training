@@ -12,7 +12,7 @@ export default {
           dark: "#0F766E", // Teal 700
         },
         secondary: {
-          DEFAULT: "#F97316", // Orange 500
+          DEFAULT: "#B8B8FF", // Orange 500
           light: "#FB923C",
           dark: "#EA580C",
         },

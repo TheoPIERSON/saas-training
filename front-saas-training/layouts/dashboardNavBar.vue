@@ -1,6 +1,5 @@
 <template>
-  <Hero />
-  <Pricing />
+  <div><Sidebar /><slot /></div>
 </template>
 
 <script setup lang="ts"></script>
