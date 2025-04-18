@@ -1,5 +1,5 @@
 <template>
-  <aside class="w-64 h-screen bg-white shadow-md border-r border-gray-200 flex flex-col fixed top-0 left-0">
+  <aside class="w-64 h-screen bg-white shadow-md border-r border-gray-200 flex flex-col fixed">
     <!-- Logo and brand -->
     <div class="p-4 border-b border-gray-200">
       <NuxtLink to="/" class="flex items-center">
