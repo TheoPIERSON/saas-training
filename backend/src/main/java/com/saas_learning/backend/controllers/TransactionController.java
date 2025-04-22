@@ -23,6 +23,7 @@ public class TransactionController {
 
     @Autowired
     private CsvImportService csvImportService;
+    @Autowired
     private TransactionRepository transactionRepository;
 
     @PostMapping("/upload-csv")

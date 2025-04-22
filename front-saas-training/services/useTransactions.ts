@@ -7,12 +7,12 @@ export function useTransactions() {
 
     const token = process.client ? localStorage.getItem("token") : null;
 
-    const response = await fetch(`${config.public.apiBaseUrl}/transactions/upload-csv`, {
+    // Ne pas définir le Content-Type, laissez le navigateur le faire automatiquement
+    const response = await fetch(`${config.public.apiBaseUrl}/api/transactions/upload-csv`, {
       method: "POST",
       body: formData,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      // Important: ne pas définir Content-Type
     });
 
     if (!response.ok) {
@@ -21,6 +21,7 @@ export function useTransactions() {
     }
 
     return await response.json();
+    console.log("Token utilisé :", token);
   }
 
   return { uploadTransactions };
