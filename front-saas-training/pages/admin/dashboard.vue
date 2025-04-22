@@ -1,5 +1,5 @@
 <template>
-  <section class="ml-64"><CsvFileUpload /></section>
+  <section class="ml-64"><CsvFileUpload /> <TransactionsList /></section>
 </template>
 
 <script setup lang="ts">
