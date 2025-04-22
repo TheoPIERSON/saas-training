@@ -65,4 +65,24 @@ public class TransactionController {
                     .body("Erreur lors de l'import : " + e.getMessage());
         }
     }
+    @GetMapping("/user-transactions")
+    public ResponseEntity<List<TransactionResponse>> getUserTransactions(@AuthenticationPrincipal User user) {
+        try {
+            List<Transaction> transactions = transactionRepository.findAllByUser(user);
+
+            // Convertir en DTOs pour la réponse
+            List<TransactionResponse> response = transactions.stream()
+                    .map(tx -> new TransactionResponse(
+                            tx.getDescription(),
+                            tx.getDate().toString(),
+                            tx.getMontant(),
+                            tx.getCategorie()
+                    )).collect(Collectors.toList());
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
 }

@@ -45,26 +45,10 @@
 
 <script setup>
 import { ref } from "vue";
+import { useTransactions } from "@/services/useTransactions";
 
-// --- Configuration ---
-// Assurez-vous que useTransactions est correctement importé/configuré
-// import { useTransactions } from "@/services/useTransactions";
-
-// Simulation pour l'exemple
-const useTransactions = () => {
-  const uploadTransactions = async (fileToUpload) => {
-    console.log("Simulating themed upload:", fileToUpload.name);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    // Simuler succès ou échec
-    if (Math.random() > 0.2) {
-      return { success: true, message: `${fileToUpload.name} imported.` };
-    } else {
-      throw new Error("Simulated upload failure.");
-    }
-  };
-  return { uploadTransactions };
-};
-// --- Fin Simulation ---
+// Définir les événements que ce composant peut émettre
+const emit = defineEmits(["upload-success"]);
 
 // --- State ---
 const file = ref(null);
@@ -75,7 +59,7 @@ const { uploadTransactions } = useTransactions();
 function handleFile(event) {
   const selectedFile = event.target.files[0];
   const inputElement = event.target;
-  isLoading.value = false; // Reset loading state if a new file is chosen
+  isLoading.value = false;
 
   if (selectedFile) {
     const fileType = selectedFile.type;
@@ -94,22 +78,30 @@ function handleFile(event) {
 
 async function handleSubmit() {
   if (!file.value || isLoading.value) {
+    if (!file.value) {
+      alert("Veuillez d'abord sélectionner un fichier CSV.");
+    }
     return;
   }
 
   isLoading.value = true;
 
   try {
+    console.log("Tentative d'upload via useTransactions...");
     const data = await uploadTransactions(file.value);
-    console.log("Import successful:", data);
+    console.log("Transactions importées :", data);
     alert(`Fichier ${file.value.name} importé avec succès !`);
+
+    // Émettre l'événement upload-success pour informer le parent
+    emit("upload-success");
+
+    // Réinitialiser après succès
     file.value = null;
     const input = document.getElementById("csv-upload-themed");
     if (input) input.value = "";
   } catch (err) {
-    console.error("Import error:", err);
+    console.error("Erreur lors de l'import :", err);
     alert("Erreur lors de l'import : " + (err.message || "Erreur inconnue"));
-    // Garder le fichier sélectionné pour permettre de réessayer
   } finally {
     isLoading.value = false;
   }

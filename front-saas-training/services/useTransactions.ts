@@ -1,18 +1,20 @@
 export function useTransactions() {
   const config = useRuntimeConfig();
+  const hasTransactions = ref(false);
+  const isLoading = ref(true);
+  const transactions = ref([]);
 
+  // Fonction pour télécharger un fichier CSV
   async function uploadTransactions(file: string | Blob) {
     const formData = new FormData();
     formData.append("file", file);
 
     const token = process.client ? localStorage.getItem("token") : null;
 
-    // Ne pas définir le Content-Type, laissez le navigateur le faire automatiquement
     const response = await fetch(`${config.public.apiBaseUrl}/api/transactions/upload-csv`, {
       method: "POST",
       body: formData,
       headers: token ? { Authorization: `Bearer ${token}` } : {},
-      // Important: ne pas définir Content-Type
     });
 
     if (!response.ok) {
@@ -21,8 +23,42 @@ export function useTransactions() {
     }
 
     return await response.json();
-    console.log("Token utilisé :", token);
   }
 
-  return { uploadTransactions };
+  // Fonction pour récupérer les transactions
+  async function fetchTransactions() {
+    isLoading.value = true;
+    try {
+      const token = process.client ? localStorage.getItem("token") : null;
+
+      const response = await fetch(`${config.public.apiBaseUrl}/api/transactions/user-transactions`, {
+        method: "GET",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur serveur : ${response.status}`);
+      }
+
+      const data = await response.json();
+      transactions.value = data;
+      hasTransactions.value = data.length > 0;
+      return data;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des transactions:", error);
+      hasTransactions.value = false;
+      transactions.value = [];
+      return [];
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  return {
+    uploadTransactions,
+    fetchTransactions,
+    hasTransactions,
+    isLoading,
+    transactions,
+  };
 }
