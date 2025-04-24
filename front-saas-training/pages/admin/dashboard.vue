@@ -5,6 +5,7 @@
     </div>
     <div v-else>
       <CsvFileUpload v-if="!hasTransactions" @upload-success="checkTransactions" />
+      <SpendingMonthly v-if="hasTransactions" :transactions="transactions" />
       <TransactionsList v-if="hasTransactions" :transactions="transactions" />
     </div>
   </section>

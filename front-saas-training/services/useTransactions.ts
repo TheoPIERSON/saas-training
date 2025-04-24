@@ -1,8 +1,10 @@
+import type { Transaction } from "~/types/transaction";
+
 export function useTransactions() {
   const config = useRuntimeConfig();
   const hasTransactions = ref(false);
   const isLoading = ref(true);
-  const transactions = ref([]);
+  const transactions = ref<Transaction[]>([]); // Ajout du type générique
 
   // Fonction pour télécharger un fichier CSV
   async function uploadTransactions(file: string | Blob) {

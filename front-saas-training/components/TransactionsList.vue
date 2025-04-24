@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 bg-white rounded-lg shadow-md">
+  <section class="p-6 bg-white rounded-lg shadow-md">
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">Mes Transactions</h2>
 
     <!-- Message de chargement -->
@@ -54,7 +54,7 @@
     <div class="flex justify-between items-center mt-6">
       <div class="text-sm text-gray-600">Affichage de {{ transactions?.length || 0 }} transaction(s)</div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
