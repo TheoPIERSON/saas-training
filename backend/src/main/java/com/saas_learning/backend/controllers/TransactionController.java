@@ -73,8 +73,8 @@ public class TransactionController {
             // Convertir en DTOs pour la réponse
             List<TransactionResponse> response = transactions.stream()
                     .map(tx -> new TransactionResponse(
-                            tx.getDescription(),
                             tx.getDate().toString(),
+                            tx.getDescription(),
                             tx.getMontant(),
                             tx.getCategorie()
                     )).collect(Collectors.toList());

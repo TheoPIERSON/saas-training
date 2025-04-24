@@ -2,9 +2,9 @@ import type { User } from "./user";
 
 export interface Transaction {
   id: number;
-  date: string; // Ou Date si vous transformez la string en Date côté front
+  date: string; // Format "YYYY-MM-DD" (LocalDate de Spring)
   description: string;
   montant: number;
   categorie: string;
-  user: User | number; // Selon si vous recevez l'objet complet ou juste l'ID
+  user: User | number;
 }

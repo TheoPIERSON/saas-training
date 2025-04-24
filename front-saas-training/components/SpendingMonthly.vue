@@ -30,28 +30,8 @@
 <script setup lang="ts">
 import { computed, onMounted } from "vue";
 import { useTransactions } from "~/services/useTransactions";
-import type { Transaction } from "~/types/transaction";
 
 const { fetchTransactions, isLoading, hasTransactions, transactions } = useTransactions();
-
-// Formater le nom du mois
-const formatMonth = (date: Date) => {
-  try {
-    return date.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
-  } catch (error) {
-    console.error("Erreur de formatage de date:", error, date);
-    return "Date inconnue";
-  }
-};
-
-// Mois actuel formaté
-const currentMonth = computed(() => {
-  return formatMonth(new Date());
-});
-
-// Obtenir le mois et année actuels pour comparaison
-const currentMonthNumber = computed(() => new Date().getMonth());
-const currentYear = computed(() => new Date().getFullYear());
 
 // Formater la monnaie
 const formatCurrency = (amount: number) => {
@@ -62,20 +42,59 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-// Calculer le total des dépenses du mois courant
-const monthlyExpenses = computed(() => {
-  if (!transactions.value || transactions.value.length === 0) return 0;
+// Mois actuel formaté pour l'affichage
+const currentMonth = computed(() => {
+  return new Date().toLocaleDateString("fr-FR", {
+    month: "long",
+    year: "numeric",
+  });
+});
 
-  return transactions.value
-    .filter((transaction: Transaction) => {
-      const transactionDate = new Date(transaction.date);
-      return (
-        transactionDate.getMonth() === currentMonthNumber.value && transactionDate.getFullYear() === currentYear.value
-      );
-    })
-    .reduce((total: number, transaction: Transaction) => {
-      return total + transaction.montant;
-    }, 0);
+const monthlyExpenses = computed(() => {
+  console.log("Recalculating monthlyExpenses. Transactions:", transactions.value); // Log initial data
+
+  if (!transactions.value?.length) {
+    console.log("No transactions found, returning 0.");
+    return 0;
+  }
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1; // Mois actuel (ex: 4 pour Avril)
+  console.log(`Filtering for Year: ${currentYear}, Month: ${currentMonth}`);
+
+  const filteredTransactions = transactions.value.filter((transaction) => {
+    try {
+      // Vérifier si la date existe et est une chaîne
+      if (typeof transaction.date !== "string") {
+        console.warn("Transaction date is not a string:", transaction);
+        return false;
+      }
+      const [year, month] = transaction.date.split("-");
+      const isCurrentMonth = parseInt(year) === currentYear && parseInt(month) === currentMonth;
+      const isExpense = typeof transaction.montant === "number" && transaction.montant < 0; // Vérifie aussi le type de montant
+
+      // Log pour chaque transaction (peut être verbeux)
+      // console.log(`Checking transaction ${transaction.id}: Date=${transaction.date}, Amount=${transaction.montant}, IsCurrentMonth=${isCurrentMonth}, IsExpense=${isExpense}`);
+
+      return isCurrentMonth && isExpense;
+    } catch (e) {
+      console.error("Error processing transaction date:", transaction.date, e);
+      return false; // Exclure en cas d'erreur de parsing
+    }
+  });
+
+  console.log("Filtered transactions for current month's expenses:", filteredTransactions); // Log les transactions filtrées
+
+  const sum = filteredTransactions.reduce((total, t) => {
+    // Vérification supplémentaire du type au cas où
+    const amount = typeof t.montant === "number" ? t.montant : 0;
+    console.log(`Reducing: total=${total}, adding amount=${amount}`); // Log chaque étape du reduce
+    return total + amount;
+  }, 0);
+
+  console.log("Final calculated sum:", sum); // Log la somme finale
+  return sum;
 });
 
 onMounted(async () => {
