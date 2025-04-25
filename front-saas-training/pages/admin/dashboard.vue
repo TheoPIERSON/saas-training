@@ -1,5 +1,5 @@
 <template>
-  <section class="ml-64">
+  <section class="md:ml-64">
     <div v-if="isLoading">
       <p>Chargement en cours...</p>
     </div>

@@ -1,22 +1,22 @@
 <template>
   <div
-    class="grid items-center justify-center min-h-screen w-full bg-gradient-to-br from-primary-light to-primary-dark p-4"
+    class="grid items-center justify-center w-full bg-gradient-to-br from-primary-light to-primary-dark p-4 py-20 md:py-4 min-h-[calc(100vh-8rem)] md:min-h-screen md:ml-0"
   >
     <StripeButton />
     <form
       @submit.prevent="handleSubmit"
-      class="w-full max-w-lg flex flex-col items-center gap-6 text-center p-8 md:p-12 bg-surface/5 backdrop-blur-lg rounded-3xl border border-white/10 shadow-glass text-slate-100"
+      class="w-full max-w-lg flex flex-col items-center gap-6 text-center p-6 md:p-12 bg-surface/5 backdrop-blur-lg rounded-3xl border border-white/10 shadow-glass text-slate-100"
     >
-      <h2 class="text-2xl md:text-3xl font-sans font-light mb-4 text-white">Importer Transactions CSV</h2>
+      <h2 class="text-2xl md:text-3xl font-sans font-light mb-2 md:mb-4 text-white">Importer Transactions CSV</h2>
 
       <input type="file" id="csv-upload-themed" @change="handleFile" accept=".csv" hidden />
 
       <label
         for="csv-upload-themed"
-        class="flex flex-col items-center justify-center w-full p-6 md:p-10 rounded-2xl border-2 border-dashed border-white/30 cursor-pointer transition duration-300 ease-in-out hover:bg-white/5 hover:border-white/50 text-sm md:text-base"
+        class="flex flex-col items-center justify-center w-full p-4 md:p-10 rounded-2xl border-2 border-dashed border-white/30 cursor-pointer transition duration-300 ease-in-out hover:bg-white/5 hover:border-white/50 text-sm md:text-base"
       >
         <svg
-          class="w-12 h-12 md:w-16 md:h-16 mb-4 text-white/60"
+          class="w-10 h-10 md:w-16 md:h-16 mb-2 md:mb-4 text-white/60"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
@@ -36,7 +36,7 @@
       <button
         type="submit"
         :disabled="!file || isLoading"
-        class="mt-4 px-8 py-3 rounded-xl font-semibold font-sans transition duration-300 ease-in-out bg-primary hover:bg-primary-dark border border-primary-dark text-text-on-primary active:enabled:scale-95 disabled:bg-primary/40 disabled:border-primary/20 disabled:text-text-on-primary/60 disabled:cursor-not-allowed"
+        class="mt-2 md:mt-4 px-6 md:px-8 py-2 md:py-3 rounded-xl font-semibold font-sans transition duration-300 ease-in-out bg-primary hover:bg-primary-dark border border-primary-dark text-text-on-primary active:enabled:scale-95 disabled:bg-primary/40 disabled:border-primary/20 disabled:text-text-on-primary/60 disabled:cursor-not-allowed"
       >
         {{ isLoading ? "Importation..." : "Importer le Fichier" }}
       </button>
