@@ -1,26 +1,28 @@
 <template>
-  <section class="p-6 backdrop-blur-md bg-white/20 border border-white/30 rounded-xl shadow-glass w-1/3">
-    <h2 class="text-2xl font-montserrat font-semibold text-primary-900 mb-6">Mes dépenses</h2>
+  <section class="p-4">
+    <div class="p-6 backdrop-blur-md bg-white/20 border border-white/30 rounded-xl shadow-glass w-1/3">
+      <h2 class="text-2xl font-montserrat font-semibold text-primary-900 mb-6">Mes dépenses</h2>
 
-    <div v-if="isLoading" class="flex justify-center items-center py-8">
-      <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
-    </div>
+      <div v-if="isLoading" class="flex justify-center items-center py-8">
+        <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
+      </div>
 
-    <div v-else-if="!hasTransactions" class="text-center py-8">
-      <p class="text-muted font-montserrat">Aucune transaction disponible</p>
-    </div>
+      <div v-else-if="!hasTransactions" class="text-center py-8">
+        <p class="text-muted font-montserrat">Aucune transaction disponible</p>
+      </div>
 
-    <div v-else>
-      <!-- Résumé du mois en cours -->
-      <div class="mb-6">
-        <div class="flex justify-between items-center mb-2">
-          <h3 class="text-lg font-montserrat font-medium text-primary-dark">{{ currentMonth }}</h3>
-          <span
-            class="text-2xl font-montserrat font-bold"
-            :class="monthlyExpenses >= 0 ? 'text-primary' : 'text-accent'"
-          >
-            {{ formatCurrency(monthlyExpenses) }}
-          </span>
+      <div v-else>
+        <!-- Résumé du mois en cours -->
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="text-lg font-montserrat font-medium text-primary-dark">{{ currentMonth }}</h3>
+            <span
+              class="text-2xl font-montserrat font-bold"
+              :class="monthlyExpenses >= 0 ? 'text-primary' : 'text-accent'"
+            >
+              {{ formatCurrency(monthlyExpenses) }}
+            </span>
+          </div>
         </div>
       </div>
     </div>

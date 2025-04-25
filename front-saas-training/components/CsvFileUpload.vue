@@ -1,7 +1,8 @@
 <template>
   <div
-    class="flex items-center justify-center min-h-screen w-full bg-gradient-to-br from-primary-light to-primary-dark p-4"
+    class="grid items-center justify-center min-h-screen w-full bg-gradient-to-br from-primary-light to-primary-dark p-4"
   >
+    <StripeButton />
     <form
       @submit.prevent="handleSubmit"
       class="w-full max-w-lg flex flex-col items-center gap-6 text-center p-8 md:p-12 bg-surface/5 backdrop-blur-lg rounded-3xl border border-white/10 shadow-glass text-slate-100"
