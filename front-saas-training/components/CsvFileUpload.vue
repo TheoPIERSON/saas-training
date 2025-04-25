@@ -46,7 +46,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useTransactions } from "@/services/useTransactions";
+import { useTransactions } from "~/services/useTransactions";
 
 // Définir les événements que ce composant peut émettre
 const emit = defineEmits(["upload-success"]);

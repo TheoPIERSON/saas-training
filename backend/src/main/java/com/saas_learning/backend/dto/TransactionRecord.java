@@ -2,6 +2,8 @@ package com.saas_learning.backend.dto;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 
 @Data
 public class TransactionRecord {
@@ -13,7 +15,7 @@ public class TransactionRecord {
     private String description;
 
     @CsvBindByName(column = "Montant")
-    private double montant;
+    private BigDecimal montant;
 
     @CsvBindByName(column = "Catégorie")
     private String categorie;

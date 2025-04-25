@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -23,7 +24,7 @@ public class Transaction {
 
     private String description;
 
-    private Double montant;
+    private BigDecimal montant;
 
     private String categorie;
 

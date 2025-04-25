@@ -43,6 +43,10 @@ export function useTransactions() {
       }
 
       const data = await response.json();
+      transactions.value = data.sort(
+        (a: Transaction, b: Transaction) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+
       transactions.value = data;
       hasTransactions.value = data.length > 0;
       return data;

@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { useTransactions } from "@/services/useTransactions";
+import { useTransactions } from "~/services/useTransactions";
 
 definePageMeta({
   middleware: ["auth"],
