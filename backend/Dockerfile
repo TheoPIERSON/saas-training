@@ -10,8 +10,7 @@ COPY src ./src
 # Compiler le projet (skip tests pour plus de rapidité)
 RUN mvn clean package -DskipTests
 
-# Étape d'exécution
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
