@@ -56,7 +56,24 @@ export const useAuthApi = () => {
     return !!token;
   };
 
-  const logout = () => {
+  // services/authApi.ts - ajout de l'appel au backend pour la déconnexion
+  const logout = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        // Appel au backend pour invalider le token
+        await useFetch(`${baseUrl}/auth/logout`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.error("Erreur lors de la déconnexion côté serveur", error);
+      }
+    }
+
+    // Même si l'appel échoue, on supprime les données locales
     localStorage.removeItem("token");
     localStorage.removeItem("currentUser");
   };

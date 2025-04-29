@@ -39,24 +39,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
-            String email = jwtUtil.getEmailFromToken(jwt);
 
-            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                Optional<User> userOpt = userRepository.findByEmail(email);
+            // Vérifier si le token est valide
+            if (jwtUtil.validateToken(jwt)) {
+                String email = jwtUtil.getEmailFromToken(jwt);
 
-                if (userOpt.isPresent()) {
-                    User user = userOpt.get();
+                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    Optional<User> userOpt = userRepository.findByEmail(email);
 
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+                    if (userOpt.isPresent()) {
+                        User user = userOpt.get();
 
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                        UsernamePasswordAuthenticationToken authToken =
+                                new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
                 }
             }
         }
 
         filterChain.doFilter(request, response);
     }
-
 }
 

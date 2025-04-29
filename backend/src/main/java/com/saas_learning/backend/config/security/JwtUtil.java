@@ -8,12 +8,17 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class JwtUtil {
 
     private final SecretKey jwtSecretKey = Keys.hmacShaKeyFor("MR6tI3zFeCAFughCUe0yuj02U0JI8STF".getBytes());
 
     private final long jwtExpirationMs = 86400000; // 24h
+    private Set<String> blacklistedTokens = new HashSet<>();
+
 
     public String getEmailFromToken(String token) {
         return Jwts.parser()
@@ -33,9 +38,10 @@ public class JwtUtil {
                 .compact();
     }
 
-
-
     public boolean validateToken(String token) {
+        if (blacklistedTokens.contains(token)) {
+            return false;
+        }
         try {
             Jwts.parser()
                     .setSigningKey(jwtSecretKey)
@@ -46,4 +52,8 @@ public class JwtUtil {
             return false;
         }
     }
+    public void invalidateToken(String token) {
+        blacklistedTokens.add(token);
+    }
+
 }

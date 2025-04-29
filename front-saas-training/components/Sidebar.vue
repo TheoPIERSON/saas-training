@@ -56,7 +56,7 @@
     <!-- Settings Link at the bottom -->
     <div class="mt-auto p-4 border-t border-gray-200">
       <NuxtLink
-        to="/admin/dashboard"
+        to="/admin/settings"
         class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
       >
         <span>Settings</span>
@@ -90,7 +90,7 @@
 
         <!-- Settings -->
         <NuxtLink
-          to="/admin/dashboard"
+          to="/admin/settings"
           class="flex items-center p-2 rounded-lg text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
         >
           <span>⚙️</span>
