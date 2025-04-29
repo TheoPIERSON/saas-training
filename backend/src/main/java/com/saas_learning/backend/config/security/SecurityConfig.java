@@ -38,8 +38,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/user/add-user").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/logout").authenticated() // Ajoutez cette ligne
-
+                        .requestMatchers(HttpMethod.POST, "/auth/logout").authenticated()
+                        // Nouveaux endpoints pour la réinitialisation du mot de passe
+                        .requestMatchers(HttpMethod.POST, "/password/forgot").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/password/validate-token").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/password/reset").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

@@ -25,7 +25,9 @@
       <div class="mb-4">
         <div class="flex justify-between items-center mb-1">
           <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
-          <a href="#" class="text-xs text-primary hover:text-primary-dark">Mot de passe oublié ?</a>
+          <NuxtLink to="/forgot-password" class="text-xs text-primary hover:text-primary-dark"
+            >Mot de passe oublié ?</NuxtLink
+          >
         </div>
         <div class="relative">
           <input
@@ -188,6 +190,7 @@
 import { reactive, ref } from "vue";
 import { useAuthApi } from "~/services/authApi"; // Importez le service d'authentification
 import { useRouter } from "vue-router"; // Pour la redirection après connexion
+import { NuxtLink } from "#components";
 
 // État du formulaire
 const form = reactive({
