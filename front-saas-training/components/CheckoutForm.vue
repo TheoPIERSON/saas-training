@@ -12,7 +12,7 @@
       </button>
     </div>
     <div v-else class="payment-success">
-      <p>Paiement réussi ! Merci pour votre achat.</p>
+      <p>Paiement réussi ! Merci pour votre achat .</p>
     </div>
   </div>
 </template>
