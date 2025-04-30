@@ -1,65 +1,76 @@
 <template>
-  <div class="checkout-form">
-    <h2>Paiement</h2>
-    <div v-if="!paymentSucceeded">
-      <div class="form-row">
-        <div id="card-element" class="card-element"></div>
-        <div id="card-errors" class="error-message" v-if="errorMessage">{{ errorMessage }}</div>
+  <div class="premium-container">
+    <div class="premium-card">
+      <div class="premium-header">
+        <h2>Passez à la formule Premium</h2>
+        <p class="premium-price">2,99 €</p>
       </div>
-      <button @click="handleSubmit" :disabled="loading" class="payment-button">
-        <span v-if="loading">Traitement en cours...</span>
-        <span v-else>Payer {{ amount / 100 }} €</span>
-      </button>
-    </div>
-    <div v-else class="payment-success">
-      <p>Paiement réussi ! Merci pour votre achat .</p>
+
+      <div class="premium-features">
+        <h3>Avantages Premium :</h3>
+        <ul>
+          <li>Accès illimité à toutes les fonctionnalités</li>
+          <li>Pas de publicités</li>
+          <li>Support prioritaire</li>
+          <li>Contenu exclusif</li>
+        </ul>
+      </div>
+
+      <button @click="showPayment = true" v-if="!showPayment" class="premium-button">Passer à Premium</button>
+
+      <div v-if="showPayment" class="payment-section">
+        <h3>Finaliser votre achat</h3>
+        <div v-if="!paymentSucceeded">
+          <div id="card-element" class="card-element"></div>
+          <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+          <button @click="processPayment" :disabled="loading" class="pay-button">
+            <span v-if="loading">Traitement en cours...</span>
+            <span v-else>Payer 2,99 €</span>
+          </button>
+        </div>
+        <div v-else class="success-message">
+          <p>🎉 Félicitations ! Votre compte est maintenant premium.</p>
+          <button @click="goToDashboard" class="dashboard-button">Accéder à mon espace</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRuntimeConfig } from "#app";
+import { ref, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "~/stores/user"; // Supposons que vous avez un store pour l'utilisateur
 
+const router = useRouter();
+const userStore = useUserStore();
 const { $stripe } = useNuxtApp();
 const config = useRuntimeConfig();
 
-const props = defineProps({
-  amount: {
-    type: Number,
-    required: true,
-  },
-  currency: {
-    type: String,
-    default: "eur",
-  },
-});
-
+const showPayment = ref(false);
 const loading = ref(false);
 const paymentSucceeded = ref(false);
 const errorMessage = ref("");
 let elements = null;
 let card = null;
+let clientSecret = null;
 
-onMounted(async () => {
-  // Créer les éléments Stripe
+// Afficher la section de paiement
+async function initializePaymentForm() {
   try {
     // Récupérer le clientSecret depuis le backend
-    const response = await fetch("/api/payment/create-payment-intent", {
+    const response = await fetch(`${config.public.apiBaseUrl}/api/premium/create-payment`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount: props.amount,
-        currency: props.currency,
-      }),
     });
 
     const data = await response.json();
-    const clientSecret = data.clientSecret;
+    clientSecret = data.clientSecret;
 
+    // Initialiser Stripe Elements
     elements = $stripe.elements({ clientSecret });
 
-    // Créer un élément de carte
+    // Créer l'élément de carte
     const style = {
       base: {
         color: "#32325d",
@@ -77,19 +88,31 @@ onMounted(async () => {
     };
 
     card = elements.create("card", { style });
-    card.mount("#card-element");
 
-    // Gérer les erreurs de validation de la carte
-    card.on("change", (event) => {
-      errorMessage.value = event.error ? event.error.message : "";
-    });
+    // Monter l'élément de carte après le rendu du DOM
+    setTimeout(() => {
+      card.mount("#card-element");
+
+      // Gérer les erreurs de validation de la carte
+      card.on("change", (event) => {
+        errorMessage.value = event.error ? event.error.message : "";
+      });
+    }, 100);
   } catch (err) {
     console.error("Erreur lors de l'initialisation du formulaire de paiement:", err);
     errorMessage.value = "Impossible d'initialiser le formulaire de paiement";
   }
+}
+
+// Lorsque l'utilisateur clique pour afficher le paiement
+watch(showPayment, (newValue) => {
+  if (newValue) {
+    initializePaymentForm();
+  }
 });
 
-async function handleSubmit() {
+// Traiter le paiement
+async function processPayment() {
   if (!card || !elements) {
     return;
   }
@@ -104,7 +127,9 @@ async function handleSubmit() {
         return_url: `${window.location.origin}/payment-success`,
         payment_method_data: {
           billing_details: {
-            name: "Client Test",
+            name: userStore.currentUser?.firstname
+              ? `${userStore.currentUser.firstname} ${userStore.currentUser.lastname}`
+              : "Utilisateur",
           },
         },
       },
@@ -115,8 +140,23 @@ async function handleSubmit() {
       // Afficher l'erreur à l'utilisateur
       errorMessage.value = result.error.message;
     } else {
-      // Paiement réussi
-      paymentSucceeded.value = true;
+      // Paiement réussi - mettre à jour le statut utilisateur côté backend
+      const confirmResponse = await fetch("/api/premium/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentIntentId: result.paymentIntent.id,
+          userId: userStore.currentUser?.id, // Assurez-vous que c'est bien un nombre (Long)
+        }),
+      });
+
+      if (confirmResponse.ok) {
+        // Mettre à jour le store utilisateur
+        userStore.updatePremiumStatus(true);
+        paymentSucceeded.value = true;
+      } else {
+        errorMessage.value = "Erreur lors de la confirmation de l'achat";
+      }
     }
   } catch (err) {
     console.error("Erreur de paiement:", err);
@@ -125,19 +165,97 @@ async function handleSubmit() {
     loading.value = false;
   }
 }
+
+// Rediriger vers le tableau de bord
+function goToDashboard() {
+  router.push("/dashboard");
+}
 </script>
 
 <style scoped>
-.checkout-form {
-  max-width: 500px;
+.premium-container {
+  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.premium-card {
+  border-radius: 10px;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  background-color: white;
+}
+
+.premium-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.premium-price {
+  font-size: 28px;
+  font-weight: bold;
+  color: #6772e5;
+  margin-top: 10px;
+}
+
+.premium-features {
+  margin-bottom: 30px;
+}
+
+.premium-features ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.premium-features li {
+  padding: 8px 0;
+  position: relative;
+  padding-left: 30px;
+}
+
+.premium-features li:before {
+  content: "✓";
+  color: #6772e5;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.premium-button,
+.pay-button,
+.dashboard-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #6772e5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.premium-button:hover,
+.pay-button:hover,
+.dashboard-button:hover {
+  background-color: #5a65d6;
+}
+
+.premium-button:disabled,
+.pay-button:disabled {
+  background-color: #b9b9b9;
+  cursor: not-allowed;
+}
+
+.payment-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
 }
 
 .card-element {
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   margin-bottom: 20px;
@@ -146,25 +264,16 @@ async function handleSubmit() {
 
 .error-message {
   color: #ff0000;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-.payment-button {
-  background-color: #6772e5;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.payment-button:disabled {
-  background-color: #b9b9b9;
-  cursor: not-allowed;
-}
-
-.payment-success {
-  color: green;
+.success-message {
   text-align: center;
+  color: #43a047;
+  padding: 20px 0;
+}
+
+.dashboard-button {
+  margin-top: 15px;
 }
 </style>

@@ -14,6 +14,9 @@ export const useUserStore = defineStore("user", {
       if (!state.currentUser) return "";
       return `${state.currentUser.firstname} ${state.currentUser.lastname}`;
     },
+    isPremium: (state) => {
+      return state.currentUser?.premium || false;
+    },
   },
 
   actions: {
@@ -51,6 +54,15 @@ export const useUserStore = defineStore("user", {
       authApi.logout();
       this.currentUser = null;
       this.isLoggedIn = false;
+    },
+
+    // Nouvelle méthode pour mettre à jour le statut premium
+    updatePremiumStatus(isPremium: boolean) {
+      if (this.currentUser) {
+        this.currentUser.premium = isPremium;
+        // Mettre à jour également dans le localStorage
+        localStorage.setItem("currentUser", JSON.stringify(this.currentUser));
+      }
     },
 
     // Initialisation du store depuis le localStorage au chargement de l'app

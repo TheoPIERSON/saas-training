@@ -26,6 +26,9 @@ public class User {
 
     private boolean isPremium;
 
+    // Ajout pour suivre quand l'utilisateur est passé premium
+    private LocalDateTime premiumSince;
+
     @Column(nullable = false)
     private boolean fromGoogle;
 

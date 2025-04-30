@@ -2,11 +2,14 @@ package com.saas_learning.backend.services;
 
 import com.saas_learning.backend.entities.User;
 import com.saas_learning.backend.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -47,5 +50,16 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setPremium(false);
         return userRepository.save(user);
+    }
+    public void upgradeToPremium(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Utilisateur avec l'ID " + userId + " non trouvé"));
+
+        user.setPremium(true);
+        user.setPremiumSince(LocalDateTime.now());
+
+        userRepository.save(user);
+
+        // Vous pourriez ajouter ici l'envoi d'un email de confirmation
     }
 }

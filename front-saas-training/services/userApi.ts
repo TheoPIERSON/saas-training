@@ -7,6 +7,7 @@ export interface User {
   lastname: string; // Pour le nom
   email: string;
   password: string;
+  premium?: boolean; // Added the premium property
 }
 
 export const useUserApi = () => {
