@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    to="/"
+    to="/payment"
     class="group mt-8 px-8 py-4 rounded-xl font-semibold font-sans transition-all duration-300 ease-in-out bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2"
   >
     <svg
