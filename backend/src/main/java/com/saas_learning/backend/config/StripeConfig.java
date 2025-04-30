@@ -10,6 +10,7 @@ public class StripeConfig {
     @Value("${stripe.api.key}")
     private String stripeApiKey;
 
+
     @PostConstruct
     public void setup() {
         Stripe.apiKey = stripeApiKey;
