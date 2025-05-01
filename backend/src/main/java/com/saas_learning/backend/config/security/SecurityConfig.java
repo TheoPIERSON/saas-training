@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/password/forgot").permitAll()
                         .requestMatchers(HttpMethod.GET, "/password/validate-token").permitAll()
                         .requestMatchers(HttpMethod.POST, "/password/reset").permitAll()
-                        .requestMatchers(HttpMethod.POST, "//api/premium/create-payment").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/premium/create-payment").permitAll()
 
                         .anyRequest().authenticated()
                 )
