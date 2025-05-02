@@ -37,7 +37,7 @@
         to="/admin/dashboard"
         class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
       >
-        <span>Subscriptions</span>
+        <span>Subscriptions <Icon name="fluent-color:star-32" /> </span>
       </NuxtLink>
       <NuxtLink
         to="/admin/dashboard"

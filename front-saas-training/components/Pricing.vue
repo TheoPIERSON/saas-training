@@ -59,7 +59,7 @@
             <h3 class="text-2xl font-bold text-gray-900 mb-1">Premium</h3>
             <p class="text-gray-900">For professionals</p>
             <div class="mt-4">
-              <span class="text-4xl font-bold text-gray-900">$29</span>
+              <span class="text-4xl font-bold text-gray-900">2.99€</span>
               <span class="text-gray-900">/month</span>
             </div>
           </div>
