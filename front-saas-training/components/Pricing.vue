@@ -90,11 +90,12 @@
                 <span>Advanced analytics</span>
               </li>
             </ul>
-            <button
+            <NuxtLink
+              to="/payment"
               class="mt-8 w-full py-3 px-4 bg-primary hover:bg-primary-dark text-white font-medium rounded-md transition duration-300"
             >
               Upgrade Now
-            </button>
+            </NuxtLink>
           </div>
         </div>
       </div>

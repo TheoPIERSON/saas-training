@@ -112,6 +112,7 @@ watch(showPayment, (newValue) => {
 });
 
 // Traiter le paiement
+// Traiter le paiement
 async function processPayment() {
   if (!card || !elements) {
     return;
@@ -121,19 +122,15 @@ async function processPayment() {
   errorMessage.value = "";
 
   try {
-    const result = await $stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/payment-success`,
-        payment_method_data: {
-          billing_details: {
-            name: userStore.currentUser?.firstname
-              ? `${userStore.currentUser.firstname} ${userStore.currentUser.lastname}`
-              : "Utilisateur",
-          },
+    const result = await $stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: card,
+        billing_details: {
+          name: userStore.currentUser?.firstname
+            ? `${userStore.currentUser.firstname} ${userStore.currentUser.lastname}`
+            : "Utilisateur",
         },
       },
-      redirect: "if_required",
     });
 
     if (result.error) {
@@ -141,9 +138,12 @@ async function processPayment() {
       errorMessage.value = result.error.message;
     } else {
       // Paiement réussi - mettre à jour le statut utilisateur côté backend
-      const confirmResponse = await fetch("/api/premium/confirm", {
+      const confirmResponse = await fetch(`${config.public.apiBaseUrl}/api/premium/confirm`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Ajoutez cette ligne
+        },
         body: JSON.stringify({
           paymentIntentId: result.paymentIntent.id,
           userId: userStore.currentUser?.id, // Assurez-vous que c'est bien un nombre (Long)
@@ -165,10 +165,9 @@ async function processPayment() {
     loading.value = false;
   }
 }
-
 // Rediriger vers le tableau de bord
 function goToDashboard() {
-  router.push("/dashboard");
+  router.push("/admin/dashboard");
 }
 </script>
 
