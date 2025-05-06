@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="bg-white shadow-md px-3 md:px-6 py-4 md:py-3 flex items-center justify-between">
+    <nav class="backdrop-blur-sm bg-white/70 rounded-lg mx-4 mt-4 shadow-lg px-3 md:px-6 py-4 md:py-3 flex items-center justify-between border border-white/20">
       <!-- Logo et nom du site -->
       <div class="flex items-center space-x-2">
         <NuxtLink to="/" class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
@@ -70,7 +70,7 @@
     <!-- Menu mobile déroulant (sans les boutons d'action) -->
     <div
       v-if="isMobileMenuOpen"
-      class="fixed top-[62px] left-0 right-0 bg-white shadow-md md:hidden border-t border-gray-100 animate-slideDown z-50"
+      class="fixed top-[78px] mx-4 left-0 right-0 backdrop-blur-sm bg-white/70 rounded-lg shadow-lg md:hidden border border-white/20 animate-slideDown z-50"
     >
       <div class="flex flex-col p-4 space-y-3">
         <!-- Liens de navigation mobile -->
