@@ -73,10 +73,4 @@ public class PremiumController {
                     .body("Erreur lors de la vérification du paiement");
         }
     }
-    // Dans votre contrôleur backend
-    @GetMapping("/test")
-    public ResponseEntity<String> testEndpoint() {
-        System.out.println("Test endpoint reached");
-        return ResponseEntity.ok("Test successful");
-    }
 }

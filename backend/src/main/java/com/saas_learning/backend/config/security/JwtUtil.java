@@ -4,6 +4,9 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -14,7 +17,15 @@ import java.util.Set;
 @Component
 public class JwtUtil {
 
-    private final SecretKey jwtSecretKey = Keys.hmacShaKeyFor("MR6tI3zFeCAFughCUe0yuj02U0JI8STF".getBytes());
+    @Value("${jwt.secret.key}")
+    private String secretKey;
+
+    private SecretKey jwtSecretKey;
+
+    @PostConstruct
+    public void init() {
+        jwtSecretKey = Keys.hmacShaKeyFor(secretKey.getBytes());
+    }
 
     private final long jwtExpirationMs = 86400000; // 24h
     private Set<String> blacklistedTokens = new HashSet<>();
